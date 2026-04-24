@@ -20,8 +20,7 @@ function drawPixel(x, y, color = "#000000") {
 }
 
 /**
- * Algoritmo de Bresenham para Líneas.
- 
+ * Algoritmo de Bresenham para Líneas. 
  * Aqui el codigo va a ir en "diagonal" pero para avanzar todo el tiempo se pregunta
  *"¿Estoy más cerca del cuadrito de arriba o del cuadro de la derecha?"
  * El "err" (error) es como un sensor que ayuda a decidir para que la 
@@ -44,8 +43,8 @@ function drawPixel(x, y, color = "#000000") {
         /**
          * 
          * En este punto es donde el sensor decide. 
-         * Si el error es positivo, significa que movernos en el eje X, es decir horizontalmente
-         *  Si es negativo, nos movemos en el eje Y. Así equilibramos el camino.
+         * Si el error es positivo, significa que se mueve en el eje X, es decir horizontalmente
+         *  Si es negativo, se mueve en el eje Y, es decir, verticalmente. Así equilibramos el camino.
          */
         if (e2 > -dy) {
             err -= dy;
@@ -54,6 +53,45 @@ function drawPixel(x, y, color = "#000000") {
         if (e2 < dx) {
             err += dx;
             y0 += sy;
+        }
+    }
+}
+/**
+ * Algoritmo de Punto Medio para Circunferencias.
+ * Aqui es codigo dibuja el circulo pero solo calcula una pequeña "rebanada" para que automáticamente la copie en otros 7 lugares.
+ * Para que el circulo se vea completo y no se vea como una "media luna" y cumpla con la simetría de los 8 octantes.
+ */
+function midPointCircle(centerX, centerY, radius, color) {
+    let x = radius;
+    let y = 0;
+    let p = 1 - radius; // Parámetro de decisión inicial
+
+    while (x >= y) {
+        /**
+         * OPTIMIZACIÓN (SIMETRÍA DE 8 OCTANTES):
+         * En lugar de calcular cada punto del círculo, calculamos uno 
+         * y pintamos sus "reflejos" en los otros 7 lados del círculo.
+         */
+        drawPixel(centerX + x, centerY + y, color);
+        drawPixel(centerX + y, centerY + x, color);
+        drawPixel(centerX - y, centerY + x, color);
+        drawPixel(centerX - x, centerY + y, color);
+        drawPixel(centerX - x, centerY - y, color);
+        drawPixel(centerX - y, centerY - x, color);
+        drawPixel(centerX + y, centerY - x, color);
+        drawPixel(centerX + x, centerY - y, color);
+
+        y++;
+
+        // EXPLICACIÓN DEL PARÁMETRO "P":
+        // El valor "p" nos dice si el siguiente punto que vamos a pintar 
+        // debe quedarse en la misma fila o si debemos bajar un poquito 
+        // para que el círculo no se vea cuadrado.
+        if (p <= 0) {
+            p = p + 2 * y + 1;
+        } else {
+            x--;
+            p = p + 2 * (y - x) + 1;
         }
     }
 }
