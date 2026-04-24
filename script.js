@@ -113,3 +113,34 @@ function getPolygonVertices(centerX, centerY, sides, radius) {
     }
     return vertices;
 }
+// --- LÓGICA DE CARGA AUTOMÁTICA ---
+window.onload = () => {
+    // Se define el centro del dibujo (la mitad de nuestro lienzo)
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // El radio del polígono y cuántos lados tendrá (un número al azar entre 5 y 10)
+    const R = 150; 
+    const n = Math.floor(Math.random() * (10 - 5 + 1)) + 5; 
+    
+    
+    // Aquí el  computador de empezar a dibujar.
+    // Primero calculamos dónde van los puntos (vértices).
+    const vertices = getPolygonVertices(centerX, centerY, n, R);
+
+    // 1. Dibujamos las paredes del polígono uniendo los puntos
+    for (let i = 0; i < n; i++) {
+        let puntoA = vertices[i];
+        let puntoB = vertices[(i + 1) % n]; // Aqui el último punto se una con el primero
+        
+        // Usamos nuestra función de Bresenham (la de las líneas)
+        bresenhamLine(puntoA.x, puntoA.y, puntoB.x, puntoB.y, "#2c3e50");
+    }
+
+    // 2. Dibujamos un punto en cada esquina
+    vertices.forEach(v => {
+        // El radio de cada círculo pequeño es R dividido en 4
+        midPointCircle(v.x, v.y, R / 4, "#e74c3c");
+    });
+};
+
