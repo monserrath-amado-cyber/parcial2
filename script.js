@@ -83,7 +83,6 @@ function midPointCircle(centerX, centerY, radius, color) {
 
         y++;
 
-        // EXPLICACIÓN DEL PARÁMETRO "P":
         // El valor "p" nos dice si el siguiente punto que vamos a pintar 
         // debe quedarse en la misma fila o si debemos bajar un poquito 
         // para que el círculo no se vea cuadrado.
@@ -94,4 +93,23 @@ function midPointCircle(centerX, centerY, radius, color) {
             p = p + 2 * (y - x) + 1;
         }
     }
+}
+/**
+ * Calcula los vértices de un polígono regular.
+ * Aqui el codigo busca calcular las distancias exactas iguales en donde se colocaran las marcas y asi establecer
+ * los vertices para las figuras 
+ */
+
+function getPolygonVertices(centerX, centerY, sides, radius) {
+    let vertices = [];
+    for (let i = 0; i < sides; i++) {
+        // Usamos seno y coseno para saber exactamente dónde poner cada punto en el espacio.
+        let angle = (i * 2 * Math.PI) / sides;
+        let x = centerX + radius * Math.cos(angle);
+        let y = centerY + radius * Math.sin(angle);
+        
+        // Guardamos la posición X y Y de cada esquina en una lista.
+        vertices.push({ x, y });
+    }
+    return vertices;
 }
