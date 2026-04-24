@@ -33,29 +33,24 @@ function drawPixel(x, y, color = "#000000") {
     let sy = (y0 < y1) ? 1 : -1; // Dice si caminamos hacia arriba o abajo
     let err = dx - dy;
 
+
     while (true) {
-        drawPixel(x0, y0, color); // Pintamos el cuadro actual
+    drawPixel(x0, y0, color);// Pintamos el cuadro actual
+    // Si ya llegamos al punto final, nos detenemos
+    // SEGURIDAD: Usamos Math.round para evitar decimales infinitos
+    if (Math.round(x0) === Math.round(x1) && Math.round(y0) === Math.round(y1)) break;
 
-        // Si ya llegamos al punto final, nos detenemos
-        if (x0 === x1 && y0 === y1) break;
-
-        let e2 = 2 * err;
-        /**
-         * 
+    let e2 = 2 * err;
+    /**
          * En este punto es donde el sensor decide. 
          * Si el error es positivo, significa que se mueve en el eje X, es decir horizontalmente
          *  Si es negativo, se mueve en el eje Y, es decir, verticalmente. Así equilibramos el camino.
          */
-        if (e2 > -dy) {
-            err -= dy;
-            x0 += sx;
-        }
-        if (e2 < dx) {
-            err += dx;
-            y0 += sy;
-        }
-    }
+    if (e2 > -dy) { err -= dy; x0 += sx; }
+    if (e2 < dx) { err += dx; y0 += sy; }
 }
+
+
 /**
  * Algoritmo de Punto Medio para Circunferencias.
  * Aqui es codigo dibuja el circulo pero solo calcula una pequeña "rebanada" para que automáticamente la copie en otros 7 lugares.
